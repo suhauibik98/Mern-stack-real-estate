@@ -28,3 +28,4 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.model("users", userSchema);
 
 module.exports = User;
+// https://www.youtube.com/watch?v=VAaUy_Moivw&t=3308s
