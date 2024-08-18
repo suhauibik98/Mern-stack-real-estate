@@ -1,6 +1,6 @@
 
-const SignIn = () => {
-    return <div></div>;
+function SignIn  ()  {
+    return <div>SignIn</div>;
 }
 
 

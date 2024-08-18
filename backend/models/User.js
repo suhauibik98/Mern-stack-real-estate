@@ -3,10 +3,11 @@ const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       min: [5, "name must be 5 charecter"],
       required: true,
+      unique:true
     },
     email: {
       type: String,
