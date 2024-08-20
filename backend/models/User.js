@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs")
 
+ 
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -22,10 +24,20 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timeseries: true }
+  { timestamps: true }
 );
 
-const User = mongoose.model("users", userSchema);
 
+userSchema.pre("save" , async function(next){
+ if(this.isModified("password")){
+  this.password = await bcrypt.hash(this.password, 10);
+  
+ }
+ else{next()}
+
+
+})
+
+const User = mongoose.model("users", userSchema);
 module.exports = User;
 // https://www.youtube.com/watch?v=VAaUy_Moivw&t=3308s

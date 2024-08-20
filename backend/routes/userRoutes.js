@@ -4,7 +4,7 @@ const router = express.Router()
 
 
 
-router.get("/",signIn)
+router.get("/test",signIn)
 
 
 
