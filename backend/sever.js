@@ -7,7 +7,7 @@ const cors = require("cors");
 const connectdb = require("./db/connectdb");
 const PORT = process.env.PORT;
 
-app.use(cors());
+app.use(cors({credentials : true}));
 app.use(express.json());
 
 

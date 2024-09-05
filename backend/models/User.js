@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema(
       min: [8, "pass must be 8 char"],
       max: [16, "max pass is 16 char"],
       required: true,
+      select : false
     },
   },
   { timestamps: true }
@@ -37,6 +38,14 @@ userSchema.pre("save" , async function(next){
 
 
 })
+
+
+
+
+userSchema.methods.comparePassword = async function(password , savedPassword){
+  const isPasswordMatched = await bcrypt.compare(password , savedPassword)
+  return isPasswordMatched
+}
 
 const User = mongoose.model("users", userSchema);
 module.exports = User;
