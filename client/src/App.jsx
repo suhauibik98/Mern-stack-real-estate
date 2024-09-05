@@ -6,16 +6,20 @@ import  SignIn  from "./pages/SignIn";
 import  SignUp  from "./pages/SignUp";
 import  Profile  from "./pages/Profile";
 import { Header } from "./components/Header";
+import Prodector from "./components/Prodector";
 function App() {
   return (
     <BrowserRouter>
     <Header/>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Prodector><Home /></Prodector>  } />
+        <Route path="/about" element={<Prodector><About /></Prodector>} />
+        <Route path="/profile" element={<Prodector><Profile /></Prodector>} />
+
+
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<SignIn />} />
       </Routes>
     </BrowserRouter>
   );

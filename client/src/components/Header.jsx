@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
-const {currentUser} = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
+
 
   return (
     <header className="bg-slate-200 shadow-md ">
@@ -38,14 +39,23 @@ const {currentUser} = useSelector((state) => state.user);
               About
             </li>
           </Link>
-          <Link to="/sign-in">
-            <li className=" text-slate-700 hover:underline">Sign in</li>
-          </Link>
-          {currentUser?.username  &&          
-          <Link to="">
-            <li className=" text-slate-700 hover:underline">{currentUser.username}</li>
-          </Link>
-          }
+          {!currentUser && (
+            <Link to="/sign-in">
+              <li className=" text-slate-700 hover:underline">Sign in</li>
+            </Link>
+          )}
+          {currentUser?.username && (
+            <>
+              <Link to="/profile">
+                <li className=" text-slate-700 hover:underline">
+                  {currentUser.username}
+                </li>
+              </Link>
+              {/* <Link to="/login" onClick={handleLogout}>
+                <li className=" text-slate-700 hover:underline">Log out</li>
+              </Link> */}
+            </>
+          )}
         </ul>
       </div>
     </header>

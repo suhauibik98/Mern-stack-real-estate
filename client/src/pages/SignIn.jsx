@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch ,useSelector} from "react-redux";
 import {
@@ -6,22 +6,16 @@ import {
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice";
-import Cookies from "js-cookie"; // Import js-cookie
 
 function SignIn() {
   const [formData, setForm] = useState({});
  
   const dispatch = useDispatch();
   const nav = useNavigate();
-const {Loading , error , currentUser , token} = useSelector(state=>state.user)
+const {Loading , error } = useSelector(state=>state.user)
   const handleChange = (e) => {
     setForm({ ...formData, [e.target.id]: e.target.value });
   };
-  useEffect(()=>{
-    console.log(currentUser );
-    console.log(Cookies.get("access_token") );
-    
-  },[currentUser])
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(signInStart());
