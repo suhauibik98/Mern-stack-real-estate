@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       select : false
     },
+    avatar:{
+      type:String,
+      default:"https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png"
+    }
   },
   { timestamps: true }
 );

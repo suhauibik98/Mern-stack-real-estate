@@ -47,6 +47,7 @@ export const Header = () => {
           {currentUser?.username && (
             <>
               <Link to="/profile">
+                <img className="rounded-full w-7 h-7 object-cover"   src={currentUser.avatar} alt="profile" />
                 <li className=" text-slate-700 hover:underline">
                   {currentUser.username}
                 </li>
