@@ -43,3 +43,8 @@ app.use((err , req , res , next)=>{
 
   })
 })
+
+// PORT=5000
+
+// DB_URL = "mongodb+srv://suhaib:Suhaib123456789@cluster0.a3obgc0.mongodb.net/ESTATE-MERN?retryWrites=true&w=majority&appName=Cluster0"
+// JWT_SECRET= "703e534c1cab2f3b33ec00c1bf526e81e9cfddcd3c3b3f03aa9da4ef88ec045c"

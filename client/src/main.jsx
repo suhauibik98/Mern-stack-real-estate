@@ -12,3 +12,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </PersistGate>
   </Provider>
 )
+// VITE_FIRE_BASE_API_KEY= "AIzaSyBKyhZ26E4ieA_HKxUTBx41DWhF9bm3YPc"
