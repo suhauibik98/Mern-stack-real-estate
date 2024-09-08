@@ -23,11 +23,11 @@ export const OAuth = () => {
           email: result.user.email,
           photo: result.user.photoURL,
         }),
-      });
+    });
+    
       const data = await res.json();
       dispatch(signInSuccess(data));
       console.log(data);
-      
       navigate("/")
     } catch (error) {
       console.error(error);

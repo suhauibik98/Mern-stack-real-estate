@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
 
-// eslint-disable-next-line react/prop-types
 const Prodector = ({children}) => {
 const {currentUser} = useSelector((state) => state.user)
 
@@ -11,5 +11,4 @@ if(currentUser !== null) {
 }
   return <Navigate to="/login" replace />
 }
-
 export default Prodector

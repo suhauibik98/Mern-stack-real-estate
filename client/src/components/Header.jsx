@@ -48,9 +48,9 @@ export const Header = () => {
             <>
               <Link to="/profile">
                 <img className="rounded-full w-7 h-7 object-cover"   src={currentUser.avatar} alt="profile" />
-                <li className=" text-slate-700 hover:underline">
+                {/* <li className=" text-slate-700 hover:underline">
                   {currentUser.username}
-                </li>
+                </li> */}
               </Link>
               {/* <Link to="/login" onClick={handleLogout}>
                 <li className=" text-slate-700 hover:underline">Log out</li>
