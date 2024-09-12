@@ -6,9 +6,11 @@ const app = express();
 const cors = require("cors");
 const connectdb = require("./db/connectdb");
 const PORT = process.env.PORT;
+const cookieParser = require("cookie-parser")
 
 app.use(cors({credentials : true}));
 app.use(express.json());
+app.use(cookieParser());
 
 
 

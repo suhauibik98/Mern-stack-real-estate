@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
@@ -7,16 +7,24 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import {
+  updateFailure,
+  updateStart,
+  updateSuccess,
+  signOut
+} from "../redux/user/userSlice";
+import Spinner from "../components/Spinner";
 
 // import React from 'react'
 
 function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser  , loading , error} = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setfileUploadError] = useState(false);
   const [formData, setformData] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (file) {
@@ -51,15 +59,46 @@ function Profile() {
     );
   };
 
+  const handleChange = (e) => {
+    setformData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json()
+      console.log(data);
+      
+      dispatch(updateSuccess(data))
+    } catch (error) {
+      dispatch(updateFailure(error.massage));
+      console.log(error);
+    }
+    finally{
+      dispatch(updateFailure())
+    }
+  };
   // fire base storge
   // allow read;
   // allow write:if
   // request.resource.size <2 *1024*1024 && request.resource.contentType.matches('image/.*')
   return (
     <>
+    {loading&&<Spinner></Spinner>}
       <div className="p-3 max-w-lg mx-auto">
         <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-        <form className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="file"
             onChange={(e) => setFile(e.target.files[0])}
@@ -70,38 +109,46 @@ function Profile() {
           />
           <img
             className="rounded-full w-20 h-20 object-cover cursor-pointer self-center mt-2"
-            src={formData.avatar ||  currentUser.avatar}
+            src={formData.avatar || currentUser.avatar}
             alt="profile"
             onClick={() => fileRef.current.click()}
           />
           <p className="text-sm self-center">
             {fileUploadError ? (
-              <span className="text-red-700"> Error Image Upload (image must be less 2 mb)</span>
+              <span className="text-red-700">
+                {" "}
+                Error Image Upload (image must be less 2 mb)
+              </span>
             ) : filePerc > 0 && filePerc < 100 ? (
               <span className="text-slate-500">{`Upload ${filePerc}%`}</span>
             ) : filePerc === 100 ? (
               <span className="text-green-400">Image successfuly upload</span>
-            ):""}
+            ) : (
+              ""
+            )}
           </p>
           <input
             type="text"
             id="username"
             placeholder="username"
             className="border p-3 rounded-lg"
-            // value={currentUser.username}
+            onChange={handleChange}
+            defaultValue={currentUser.username}
           />
           <input
             type="email"
             id="email"
             placeholder="email"
             className="border p-3 rounded-lg"
-            // value={currentUser.email}
+            onChange={handleChange}
+            defaultValue={currentUser.email}
           />
           <input
-            type="text"
+            type="password"
             id="password"
             placeholder="password"
             className="border p-3 rounded-lg"
+            onChange={handleChange}
           />
 
           <button className="bg-slate-600 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-85">
@@ -110,8 +157,9 @@ function Profile() {
         </form>
         <div className="flex justify-between mt-5">
           <span className="text-red-600">Delete account</span>
-          <span className="text-red-600">Sign out</span>
+          <span className="text-red-600 hover:cursor-pointer" onClick={()=>dispatch(signOut())}>Sign out</span>
         </div>
+        <p className="text-red-700 mt-4">{error?error+"knlk" :""}kjbjkbj</p>
       </div>
     </>
   );
