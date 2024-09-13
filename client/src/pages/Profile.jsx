@@ -11,20 +11,24 @@ import {
   updateFailure,
   updateStart,
   updateSuccess,
-  signOut
+  signOut,
 } from "../redux/user/userSlice";
 import Spinner from "../components/Spinner";
+import { useNavigate } from "react-router-dom";
+import DeleteUser from "../components/DeleteUser";
 
 // import React from 'react'
 
 function Profile() {
-  const { currentUser  , loading , error} = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setfileUploadError] = useState(false);
+  const [Popup, setPopup] = useState(false);
   const [formData, setformData] = useState({});
   const dispatch = useDispatch();
+  const nav = useNavigate();
 
   useEffect(() => {
     if (file) {
@@ -43,7 +47,7 @@ function Profile() {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        // console.log("Upload is " + progress + "% done");
         setFilePerc(Math.round(progress));
       },
       (error) => {
@@ -77,16 +81,16 @@ function Profile() {
         },
         body: JSON.stringify(formData),
       });
-      const data = await res.json()
+      const data = await res.json();
       console.log(data);
-      
-      dispatch(updateSuccess(data))
+
+      dispatch(updateSuccess(data));
+      nav("/");
     } catch (error) {
-      dispatch(updateFailure(error.massage));
+      dispatch(updateFailure({ error: error.massage }));
       console.log(error);
-    }
-    finally{
-      dispatch(updateFailure())
+    } finally {
+      dispatch(updateFailure());
     }
   };
   // fire base storge
@@ -95,7 +99,8 @@ function Profile() {
   // request.resource.size <2 *1024*1024 && request.resource.contentType.matches('image/.*')
   return (
     <>
-    {loading&&<Spinner></Spinner>}
+    {Popup &&<DeleteUser></DeleteUser>}
+      {loading && <Spinner></Spinner>}
       <div className="p-3 max-w-lg mx-auto">
         <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -116,8 +121,7 @@ function Profile() {
           <p className="text-sm self-center">
             {fileUploadError ? (
               <span className="text-red-700">
-                {" "}
-                Error Image Upload (image must be less 2 mb)
+               Error Image Upload (image must be less 2 mb)
               </span>
             ) : filePerc > 0 && filePerc < 100 ? (
               <span className="text-slate-500">{`Upload ${filePerc}%`}</span>
@@ -156,10 +160,16 @@ function Profile() {
           </button>
         </form>
         <div className="flex justify-between mt-5">
-          <span className="text-red-600">Delete account</span>
-          <span className="text-red-600 hover:cursor-pointer" onClick={()=>dispatch(signOut())}>Sign out</span>
+          <span className="text-red-600" onClick={()=>setPopup(true)}>Delete account</span>
+          <DeleteUser open={Popup}></DeleteUser>
+          <span
+            className="text-red-600 hover:cursor-pointer"
+            onClick={() => dispatch(signOut())}
+          >
+            Sign out
+          </span>
         </div>
-        <p className="text-red-700 mt-4">{error?error+"knlk" :""}kjbjkbj</p>
+        <p className="text-red-700 mt-4">{error ? error : ""}</p>
       </div>
     </>
   );

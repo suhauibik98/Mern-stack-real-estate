@@ -32,11 +32,22 @@ const updateUser = async (req, res, next) => {
       { new: true }
     );
 
-    const {password , ...rest} = updateUser._doc;
-    res.status(200).json(rest)
+    const { password, ...rest } = updateUser._doc;
+    res.status(200).json(rest);
   } catch (err) {
-    next(errorHandler(err.code,err));
+    next(errorHandler(err.code, err));
   }
 };
 
-module.exports = { signIn, updateUser };
+const deleteUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id)
+    return next(errorHandler(404, "you can only delete your own account"));
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "user deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { signIn, updateUser, deleteUser };

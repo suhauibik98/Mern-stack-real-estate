@@ -28,6 +28,7 @@ const signin = async (req,res,next)=>{
  const {email,password} = req.body;
  try{
   const validUser = await User.findOne({email}).select("+password")
+console.log(validUser);
 
   if(!validUser){
     return next(errorHandler(404,"user not found"))
