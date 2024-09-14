@@ -11,7 +11,9 @@ import {
   updateFailure,
   updateStart,
   updateSuccess,
-  signOut,
+  signOutStart,
+  signOutSuccess,
+  signOutFailure,
 } from "../redux/user/userSlice";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +84,6 @@ function Profile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
 
       dispatch(updateSuccess(data));
       nav("/");
@@ -93,6 +94,26 @@ function Profile() {
       dispatch(updateFailure());
     }
   };
+  const setToValueDeleted=()=>{
+    setPopup(true)
+  }
+  const callBackFun =(el)=>{
+    setPopup(el)
+  }
+
+  const handleSignOut = async ()=>{
+try{
+   dispatch(signOutStart())
+ const res = await fetch("/api/auth/signout")
+ const data = res.json()
+ dispatch(signOutSuccess(data))
+}
+catch(err){
+  // console.log(err)
+  dispatch(signOutFailure(err))
+}
+
+  }
   // fire base storge
   // allow read;
   // allow write:if
@@ -160,11 +181,11 @@ function Profile() {
           </button>
         </form>
         <div className="flex justify-between mt-5">
-          <span className="text-red-600" onClick={()=>setPopup(true)}>Delete account</span>
-          <DeleteUser open={Popup}></DeleteUser>
+          <button className="text-red-600" onClick={setToValueDeleted}>Delete account</button>
+          <DeleteUser open={Popup} setOpen={callBackFun}></DeleteUser>
           <span
             className="text-red-600 hover:cursor-pointer"
-            onClick={() => dispatch(signOut())}
+            onClick={handleSignOut}
           >
             Sign out
           </span>

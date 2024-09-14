@@ -2,14 +2,7 @@ const bcrypt = require("bcryptjs");
 const { errorHandler } = require("../util/error");
 const User = require("../models/User");
 
-const signIn = async (req, res) => {
-  res.json({ m: "hi" });
-  // const {email,password}=req.body;
-  // const user = await User.findOne({email});
-  // if(!user){
-  //     return res.status(400).json({message:"User not found"});
-  //     }
-};
+
 
 const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
@@ -44,10 +37,11 @@ const deleteUser = async (req, res, next) => {
     return next(errorHandler(404, "you can only delete your own account"));
   try {
     await User.findByIdAndDelete(req.params.id);
+    res.clearCookie("access_token");
     res.status(200).json({ message: "user deleted successfully" });
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { signIn, updateUser, deleteUser };
+module.exports = { updateUser, deleteUser };
