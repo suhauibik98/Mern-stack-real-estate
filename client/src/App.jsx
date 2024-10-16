@@ -15,8 +15,6 @@ function App() {
         <Route path="/" element={<Prodector><Home /></Prodector>  } />
         <Route path="/about" element={<Prodector><About /></Prodector>} />
         <Route path="/profile" element={<Prodector><Profile /></Prodector>} />
-
-
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="*" element={<SignIn />} />

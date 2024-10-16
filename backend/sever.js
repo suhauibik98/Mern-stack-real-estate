@@ -22,6 +22,11 @@ const AuthRouter = require("./routes/authRouter");
 app.use("/api/auth", AuthRouter);
 
 
+const ListingRouter = require("./routes/listingRouter")
+app.use("/api/listing", ListingRouter);
+
+
+// const listenIng = r
 
 
 app.listen(PORT, async () => {
@@ -45,6 +50,8 @@ app.use((err , req , res , next)=>{
 
   })
 })
+
+
 
 // PORT=5000
 
