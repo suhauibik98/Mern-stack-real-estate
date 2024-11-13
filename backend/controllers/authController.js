@@ -2,18 +2,29 @@ const User = require("../models/User");
 const { errorHandler } = require("../util/error");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+
+
 const signup = async (req, res, next) => {
+
   const { username, email, password } = req.body;
+
   const newUser = new User({ username, email, password });
+
   try {
+
     await newUser.save();
+
     res.status(201).json({ message: "User created successfully" });
+
   } catch (err) {
     if (err.name === "ValidationError") {
       // Handle validation errors (e.g., missing required fields)
       next(errorHandler(400, "Validation Error: " + err.message));
     } else if (err.code && err.code === 11000) {
+
       // Handle duplicate key error (e.g., email already exists)
+
       next(
         errorHandler(
           409,
@@ -47,6 +58,7 @@ const signin = async (req, res, next) => {
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET , {expiresIn :process.env.JWT_EXPIRE});
 
     validUser.password = undefined;
+    validUser.isGoogle = false
 
     res
       .cookie("access_token", token, { httpOnly: true })
@@ -58,6 +70,7 @@ const signin = async (req, res, next) => {
 };
 
 const google_Auth = async (req, res, next) => {
+ 
   const { email, name, photo } = req.body;
   try {
     const find_user = await User.findOne({ email });
@@ -81,6 +94,9 @@ const google_Auth = async (req, res, next) => {
         avatar: photo,
       });
 
+      newUser.isGoogle = true
+      
+
       await newUser.save();
 
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
@@ -97,8 +113,8 @@ const google_Auth = async (req, res, next) => {
 
 const signOut = async (req, res, next) => {
   try{
-        res.clearCookie("access_token");
-        res.status(200).json("signOut")
+    res.cookie("access_token", "", { httpOnly: true })
+    res.status(200).json("signOut")
   }
   catch(err){
     next(err)

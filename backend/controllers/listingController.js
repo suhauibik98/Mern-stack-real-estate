@@ -2,11 +2,13 @@ const listing = require("../models/Listing");
 
 
 const createListing = async (req, res, next) => {
+  console.log(req.body);
+  
   const {
     name,
     description,
     regularPrice,
-    disscountPrice,
+    discountPrice,
     bathrooms,
     bedrooms,
     furnished,
@@ -14,14 +16,14 @@ const createListing = async (req, res, next) => {
     type,
     parking,
     offer,
-    imageUrls,
+    images,
     userRef
   } = req.body;
   const newListing = new listing({
     name,
     description,
     regularPrice,
-    disscountPrice,
+    discountPrice,
     bathrooms,
     bedrooms,
     furnished,
@@ -29,14 +31,18 @@ const createListing = async (req, res, next) => {
     type,
     parking,
     offer,
-    imageUrls,
-    userRef
+    imageUrls : images,
+    userRef : req.user._id
   });
+  console.log();
+  
   try {
     await newListing.save();
-    res.status(201).json({ massages: "create successfully" });
+    const user = await newListing.populate("userRef" , "email")
+    res.status(201).json({ massages: "create successfully" , user });
     next()
   } catch (error) {
+    console.log(error);
     
     res.status(400).json({ massages: "create failed" });
   

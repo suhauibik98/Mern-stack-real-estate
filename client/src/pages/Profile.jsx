@@ -16,7 +16,7 @@ import {
   signOutFailure,
 } from "../redux/user/userSlice";
 import Spinner from "../components/Spinner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteUser from "../components/DeleteUser";
 
 // import React from 'react'
@@ -37,6 +37,8 @@ function Profile() {
       handleFileUplod(file);
     }
   }, [file]);
+
+  console.log(currentUser);
 
   const handleFileUplod = (file) => {
     const storge = getStorage(app);
@@ -94,33 +96,81 @@ function Profile() {
       dispatch(updateFailure());
     }
   };
-  const setToValueDeleted=()=>{
-    setPopup(true)
-  }
-  const callBackFun =(el)=>{
-    setPopup(el)
-  }
+  const setToValueDeleted = () => {
+    setPopup(true);
+  };
+  const callBackFun = (el) => {
+    setPopup(el);
+  };
 
-  const handleSignOut = async ()=>{
-try{
-   dispatch(signOutStart())
- const res = await fetch("/api/auth/signout")
- const data = res.json()
- dispatch(signOutSuccess(data))
-}
-catch(err){
-  // console.log(err)
-  dispatch(signOutFailure(err))
-}
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutStart());
+      const res = await fetch("/api/auth/signout");
+      const data = res.json();
+      dispatch(signOutSuccess(data));
+    } catch (err) {
+      // console.log(err)
+      dispatch(signOutFailure(err));
+    }
+  };
 
-  }
+  const renderPasswordFields = () => {
+    if (currentUser.isGoogle) {
+      return currentUser.isModifiedPassword ? (
+        <>
+          <input
+            type="password"
+            id="password"
+            placeholder="Current password"
+            className="border p-3 rounded-lg"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            id="new_password"
+            placeholder="New password"
+            className="border p-3 rounded-lg mt-2"
+            onChange={handleChange}
+          />
+        </>
+      ) : (
+        <input
+          type="password"
+          id="new_password"
+          placeholder="Create new password"
+          className="border p-3 rounded-lg"
+          onChange={handleChange}
+        />
+      );
+    } else {
+      return (
+        <>
+          <input
+            type="password"
+            id="password"
+            placeholder="Current password"
+            className="border p-3 rounded-lg"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            id="new_password"
+            placeholder="New password"
+            className="border p-3 rounded-lg mt-2"
+            onChange={handleChange}
+          />
+        </>
+      );
+    }
+  };
   // fire base storge
   // allow read;
   // allow write:if
   // request.resource.size <2 *1024*1024 && request.resource.contentType.matches('image/.*')
   return (
     <>
-    {Popup &&<DeleteUser></DeleteUser>}
+      {Popup && <DeleteUser></DeleteUser>}
       {loading && <Spinner></Spinner>}
       <div className="p-3 max-w-lg mx-auto">
         <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -142,7 +192,7 @@ catch(err){
           <p className="text-sm self-center">
             {fileUploadError ? (
               <span className="text-red-700">
-               Error Image Upload (image must be less 2 mb)
+                Error Image Upload (image must be less 2 mb)
               </span>
             ) : filePerc > 0 && filePerc < 100 ? (
               <span className="text-slate-500">{`Upload ${filePerc}%`}</span>
@@ -168,20 +218,83 @@ catch(err){
             onChange={handleChange}
             defaultValue={currentUser.email}
           />
-          <input
+
+          {/* {currentUser.isGoogle ? (
+            currentUser.isModifiedPassword ? (
+              <>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="current password"
+                  className="border p-3 rounded-lg"
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  id="new_password"
+                  placeholder="new password"
+                  className="border p-3 rounded-lg mt-2"
+                  onChange={handleChange}
+                />
+              </>
+            ) : (
+              <input
+                type="password"
+                id="new_password"
+                placeholder="create new password"
+                className="border p-3 rounded-lg"
+                onChange={handleChange}
+              />
+            )
+          ) : (
+            <>
+              <input
+                type="password"
+                id="password"
+                placeholder="current password"
+                className="border p-3 rounded-lg"
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                id="new_password"
+                placeholder="new password"
+                className="border p-3 rounded-lg mt-2"
+                onChange={handleChange}
+              />
+            </>
+          )} */}
+{renderPasswordFields()}
+          {/* <input
             type="password"
-            id="password"
-            placeholder="password"
+            id={`${currentUser.isGoogle?"new_password":"password"}`}
+            placeholder={`${currentUser.isGoogle?"create new password":"currunt password"}`}
             className="border p-3 rounded-lg"
             onChange={handleChange}
           />
 
+            {(currentUser.isGoogle && currentUser.isisModifiedPassword) && <input
+            type="password"
+            id="new_password"
+            placeholder="new password"
+            className="border p-3 rounded-lg"
+            onChange={handleChange}
+          />} */}
+
           <button className="bg-slate-600 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-85">
-            update
+            {loading ? "update..." : "update"}
           </button>
+          <Link
+            to={"/create-listing"}
+            className="bg-green-700 uppercase text-center text-white rounded-lg p-3 hover:opacity-95"
+          >
+            Create listing
+          </Link>
         </form>
         <div className="flex justify-between mt-5">
-          <button className="text-red-600" onClick={setToValueDeleted}>Delete account</button>
+          <button className="text-red-600" onClick={setToValueDeleted}>
+            Delete account
+          </button>
           <DeleteUser open={Popup} setOpen={callBackFun}></DeleteUser>
           <span
             className="text-red-600 hover:cursor-pointer"

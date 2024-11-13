@@ -5,10 +5,13 @@ import { Navigate } from 'react-router-dom'
 
 const Prodector = ({children}) => {
 const {currentUser} = useSelector((state) => state.user)
+// console.log(currentUser);
+
+ 
 
 if(currentUser !== null) {
     return children
 }
-  return <Navigate to="/login" replace />
+  return <Navigate to="/login" replace /> 
 }
 export default Prodector

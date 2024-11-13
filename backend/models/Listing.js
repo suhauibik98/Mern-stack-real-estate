@@ -14,7 +14,7 @@ const ListingSchema = new mongoose.Schema(
       required: true,
       type: Number,
     },
-    disscountPrice: {
+    discountPrice: {
       required: true,
       type: Number,
     },
@@ -49,11 +49,10 @@ const ListingSchema = new mongoose.Schema(
     imageUrls: {
       type: Array,
       required: true,
-      default:
-        "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png",
     },
     userRef: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users',
       required: true,
     },
   },
