@@ -3,10 +3,9 @@ const { errorHandler } = require("../util/error");
 const User = require("../models/User");
 
 const updateUser = async (req, res, next) => {
-  const { prevPassword, password, new_password, username, email, avatar } =
-    req.body;
-  console.log(req.body);
+  const { password, new_password, username, email, avatar } = req.body;
 
+  // Check if the user is updating their own account
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can only update your own account"));
   }
@@ -14,23 +13,44 @@ const updateUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).select("+password");
 
-    // Verify current password for non-Google users
+    // Update avatar, username, and email if provided
+    if (avatar) user.avatar = avatar;
+    if (username) user.username = username;
+    if (email) user.email = email;
 
-    if (!req.user.isGoogle) {
-      if (!password) {
-        return next(errorHandler(400, "Previous password is required"));
-      }
-      const isMatch = await bcrypt.compare(password, user.password);
-      console.log(isMatch);
-
-      if (!isMatch) {
-        return next(errorHandler(400, "Incorrect current password"));
+    // Handle password change
+    if (new_password) {
+      // For Google-authenticated users
+      if (req.user.isGoogle) {
+        // If Google user has set a password previously
+        if (user.isModifiedPassword) {
+          // Verify current password if provided
+          if (!password) {
+            return next(errorHandler(400, "Current password is required"));
+          }
+          const isMatch = await bcrypt.compare(password, user.password);
+          if (!isMatch) {
+            return next(errorHandler(400, "Incorrect current password"));
+          }
+        }
+        // Set the new password
+        user.password = new_password;
+        user.isModifiedPassword = true;
+      } else {
+        // For regular (non-Google) users
+        if (!password) {
+          return next(errorHandler(400, "Current password is required"));
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return next(errorHandler(400, "Incorrect current password"));
+        }
+        // Set the new password
+        user.password = new_password;
       }
     }
 
-    // Update the user
-    user.password = new_password;
-
+    // Save the updated user data
     await user.save();
 
     // Exclude password from the response

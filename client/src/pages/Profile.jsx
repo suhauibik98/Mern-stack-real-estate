@@ -38,7 +38,6 @@ function Profile() {
     }
   }, [file]);
 
-  console.log(currentUser);
 
   const handleFileUplod = (file) => {
     const storge = getStorage(app);
@@ -88,7 +87,8 @@ function Profile() {
       const data = await res.json();
 
       dispatch(updateSuccess(data));
-      nav("/");
+
+      if(res.status === 200) nav("/");
     } catch (error) {
       dispatch(updateFailure({ error: error.massage }));
       console.log(error);

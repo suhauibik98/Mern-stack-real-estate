@@ -101,7 +101,8 @@ async ()=>{
               </span>
             ) : fileProgress > 0 && fileProgress < 100 ? (
               <span className="text-slate-500">{`Upload ${fileProgress}%`}</span>
-            ) : fileProgress === 100 ? (
+            ) 
+            : fileProgress === 100 ? (
               <span className="text-green-400">Image successfuly upload</span>
             ) : (
               ""

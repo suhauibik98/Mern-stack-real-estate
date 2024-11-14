@@ -1,9 +1,8 @@
-const listing = require("../models/Listing");
-
+const Listings = require("../models/Listing");
+const { errorHandler } = require("../util/error");
 
 const createListing = async (req, res, next) => {
-  console.log(req.body);
-  
+
   const {
     name,
     description,
@@ -17,9 +16,9 @@ const createListing = async (req, res, next) => {
     parking,
     offer,
     images,
-    userRef
+    userRef,
   } = req.body;
-  const newListing = new listing({
+  const newListing = new Listings({
     name,
     description,
     regularPrice,
@@ -31,22 +30,38 @@ const createListing = async (req, res, next) => {
     type,
     parking,
     offer,
-    imageUrls : images,
-    userRef : req.user._id
+    imageUrls: images,
+    userRef: req.user._id,
   });
-  console.log();
-  
+
   try {
     await newListing.save();
-    const user = await newListing.populate("userRef" , "email")
-    res.status(201).json({ massages: "create successfully" , user });
-    next()
+    const user = await newListing.populate("userRef", "email avatar");
+    
+    res.status(201).json({ massages: "create successfully", user });
+    next();
   } catch (error) {
     console.log(error);
-    
-    res.status(400).json({ massages: "create failed" });
-  
-}
+
+    res.status(400).json({ messages: "create failed" });
+  }
 };
 
-module.exports = {  createListing };
+const getAll = async (req, res, next) => {
+
+  try {
+ const Cards = await Listings.find()
+ .populate("userRef", "email avatar username")
+ 
+ res.status(200).json(Cards)
+
+
+  } catch (err) {
+
+    next(errorHandler(401, "not authraization"));
+
+  }
+
+};
+
+module.exports = { createListing, getAll };
