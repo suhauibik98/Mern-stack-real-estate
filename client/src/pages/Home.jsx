@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ListingCard from "../components/ListingCard";
+import { useDispatch ,useSelector } from "react-redux";
+import { setListing } from "../redux/user/ListingSlice";
 
 function Home() {
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
+ const dispatch = useDispatch()
+ const {listing} = useSelector((state) => state.listing);
+ 
 
   const handleGetAll = async () => {
     try {
@@ -10,11 +15,10 @@ function Home() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": "Bearer " + localStorage.getItem("token")
         },
       });
       const result = await res.json();
-      setData(result);
+      dispatch(setListing(result));
     } catch (error) {
       console.log(error);
     }
@@ -22,17 +26,17 @@ function Home() {
 
   useEffect(() => {
     handleGetAll();
-  }, []);
+  }, [listing]);
 
   return (
     <div className="flex flex-wrap justify-center px-4 py-8">
-      {data ? (
-        Array.isArray(data) ? (
-          data.map((item, index) => (
+      {listing ? (
+        Array.isArray(listing) ? (
+          listing.map((item, index) => (
             <ListingCard key={index} listing={item} />
           ))
         ) : (
-          <ListingCard listing={data} />
+          <ListingCard listing={listing} />
         )
       ) : (
         <p>Loading...</p>

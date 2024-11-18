@@ -1,17 +1,14 @@
 /* eslint-disable react/prop-types */
 
+import { useNavigate } from "react-router-dom";
+
 
 function ListingCard({ listing }) {
-
-
-    const handleNav=(e)=>{
-        console.log(listing);
-        
-    }
-
+const {_id} = listing 
+const Navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-sm m-4" onClick={()=>handleNav()}>
+    <div className="bg-white cursor-pointer rounded-lg shadow-lg overflow-hidden w-full max-w-sm m-4" onClick={()=>Navigate(`/card-ditails/${_id}` , {state:{listing}} )}>
       <div className="relative h-48">
         {listing.imageUrls?.[0] ? (
           <img

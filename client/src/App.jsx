@@ -8,6 +8,8 @@ import  Profile  from "./pages/Profile";
 import { Header } from "./components/Header";
 import Prodector from "./components/Prodector";
 import  CreateListing  from "./pages/CreateListing";
+import { CardDetails } from "./components/CardDeitails";
+import UpdateListing from "./pages/UpdateListing";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +20,8 @@ function App() {
         <Route path="/profile" element={<Prodector><Profile /></Prodector>} />
 
         <Route path="/create-listing" element={<Prodector><CreateListing></CreateListing></Prodector>}/>
+        <Route path="/card-ditails/:cardId" element={<Prodector><CardDetails></CardDetails></Prodector>}/>
+        <Route path="/card-update/:cardId" element={<Prodector><UpdateListing></UpdateListing></Prodector>}/>
       
         
         <Route path="/sign-in" element={<SignIn />} />

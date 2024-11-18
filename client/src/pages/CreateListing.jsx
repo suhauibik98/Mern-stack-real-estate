@@ -6,9 +6,11 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateListing = () => {
+  const Nav = useNavigate()
   const [fileProgress, setFileProgress] = useState(0)
   const [fileUploadError, setfileUploadError] = useState(false);
   const [formData, setFormData] = useState({
@@ -85,6 +87,7 @@ async ()=>{
         body:JSON.stringify(formData),
       });
       const data = await res.json();
+          Nav("/")
       console.log(data);
     } catch (err) {
       console.log(err);
