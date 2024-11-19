@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const CreateListing = () => {
+
   const Nav = useNavigate()
   const [fileProgress, setFileProgress] = useState(0)
   const [fileUploadError, setfileUploadError] = useState(false);
@@ -69,6 +70,7 @@ async ()=>{
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+
     const submissionData = new FormData();
     Object.keys(formData).forEach((key) => {
       if (key === "images") {
@@ -79,16 +81,15 @@ async ()=>{
     });
 
     try {
-      const res = await fetch("/api/listing/create", {
+       await fetch("/api/listing/create", {
         method: "POST",
         headers:{
           "Content-Type": "application/json",
         },
         body:JSON.stringify(formData),
       });
-      const data = await res.json();
+      // const data = await res.json();
           Nav("/")
-      console.log(data);
     } catch (err) {
       console.log(err);
     }

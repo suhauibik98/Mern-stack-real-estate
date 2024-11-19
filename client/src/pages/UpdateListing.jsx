@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getDownloadURL,
   getStorage,
@@ -18,16 +18,22 @@ const UpdateListing = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = getAuth();
-//   console.log(auth.currentUser.uid);
-  
+  //   console.log(auth.currentUser.uid);
+
   // Load previous listing data
   const prevData = location.state.listing;
   const [fileProgress, setFileProgress] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({
     ...prevData,
-    images: prevData.imageUrls || [], // Load previous image URLs
+    imageUrls: prevData.imageUrls || [], // Load previous image URLs
   });
+
+  useEffect(() => {
+    // console.log(prevData);
+
+    console.log(formData);
+  }, [formData.imageUrls]);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -51,15 +57,27 @@ const UpdateListing = () => {
 
         setFormData((prev) => ({
           ...prev,
-          images: prev.images.filter((url) => url !== imageUrl),
+          imageUrls: prev.imageUrls.filter((url) => url !== imageUrl),
         })); // Remove from state
       } catch (error) {
         console.error("Error deleting image:", error);
       }
     } else console.log("no user");
+
   };
 
-  // Upload new images
+  const changeImage = (url)=>{
+   console.log(formData , url);
+   
+    setFormData((prev)=>({
+      ...prev,
+      imageUrls: prev.imageUrls.filter((Url) => Url !== url )
+    }))
+
+  }
+
+  // Upload new imageUrls
+
   const handleFileUpload = (files) => {
     const storage = getStorage(app);
 
@@ -82,7 +100,7 @@ const UpdateListing = () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
           setFormData((prev) => ({
             ...prev,
-            images: [...prev.images, downloadURL],
+            imageUrls: [...prev.imageUrls, downloadURL],
           }));
         }
       );
@@ -94,13 +112,16 @@ const UpdateListing = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`/api/listing/update/${prevData._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `/api/listing/update-cours-id/${prevData._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         const updatedListing = await response.json();
@@ -238,15 +259,16 @@ const UpdateListing = () => {
             className="border p-3 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
           />
           <ul className="mt-2 text-gray-600">
-            {formData.images.map((imageUrl, index) => (
+            {formData.imageUrls.map((imageUrl, index) => (
               <li
                 key={index}
                 className="text-sm flex items-center justify-between"
               >
+                <span>{imageUrl}</span>
                 <img className="aspect-square w-20" src={imageUrl} />
                 <button
                   type="button"
-                  onClick={() => deleteImage(imageUrl)}
+                  onClick={() => changeImage(imageUrl)}
                   className="text-red-500 ml-2"
                 >
                   Delete

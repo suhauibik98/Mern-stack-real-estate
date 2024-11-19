@@ -9,7 +9,11 @@ function Home() {
  const {listing} = useSelector((state) => state.listing);
  
 
-  const handleGetAll = async () => {
+  
+
+  useEffect(() => {
+
+const handleGetAll = async () => {
     try {
       const res = await fetch("/api/listing/get-all", {
         method: "GET",
@@ -24,9 +28,12 @@ function Home() {
     }
   };
 
-  useEffect(() => {
+
     handleGetAll();
-  }, [listing]);
+
+
+
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-center px-4 py-8">
