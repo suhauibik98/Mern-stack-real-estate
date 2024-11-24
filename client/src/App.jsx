@@ -10,7 +10,51 @@ import Prodector from "./components/Prodector";
 import  CreateListing  from "./pages/CreateListing";
 import { CardDetails } from "./components/CardDeitails";
 import UpdateListing from "./pages/UpdateListing";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { signInSuccess, signOutSuccess } from "./redux/user/userSlice";
+// import {di}
+
+
 function App() {
+  const dispatch = useDispatch()
+  const {currentUser} = useSelector((state) => state.user)
+
+useEffect(()=>{
+  const getLogedUser = async () => {
+    try {
+    const res = await axios.get("/api/auth/logedUser")
+    if(res.status === 200){
+      dispatch(signInSuccess(res.data))
+    }else{
+
+      localStorage.clear()    
+      dispatch(signOutSuccess())
+    }
+  } catch (error) {
+    
+console.log(error);
+
+  }
+}
+
+getLogedUser()
+
+},[])
+
+
+useEffect(() => {
+  if(!currentUser){
+    dispatch(signOutSuccess())
+  }
+} , [currentUser])
+
+console.log(currentUser);
+
+
+
+
   return (
     <BrowserRouter>
     <Header/>

@@ -11,9 +11,8 @@ function Home() {
 
   
 
-  useEffect(() => {
-
-const handleGetAll = async () => {
+ useEffect(() => {
+  const handleGetAll = async () => {
     try {
       const res = await fetch("/api/listing/get-all", {
         method: "GET",
@@ -21,19 +20,16 @@ const handleGetAll = async () => {
           "Content-Type": "application/json",
         },
       });
+
       const result = await res.json();
       dispatch(setListing(result));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-
-    handleGetAll();
-
-
-
-  }, []);
+  handleGetAll();
+}, [dispatch]);
 
   return (
     <div className="flex flex-wrap justify-center px-4 py-8">

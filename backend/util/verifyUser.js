@@ -8,7 +8,10 @@ const verifyUser = (req, res, next) => {
   if (!token) return next(errorHandler(401, "Unauthorized"));
 
   jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
-    if (err) return next(errorHandler(403, "Forbidden"));
+    if (err) {
+      return next(errorHandler(403, "Forbidden"));
+      
+    }
 
     const userObj = await User.findById(decodedToken.id);
 

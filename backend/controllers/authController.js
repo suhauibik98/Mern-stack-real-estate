@@ -61,6 +61,7 @@ const signin = async (req, res, next) => {
     validUser.isGoogle = false
 
     res
+    // .cookie("access_token", token, { httpOnly: true  , maxAge : 1 * 60 * 1000})
       .cookie("access_token", token, { httpOnly: true })
       .status(200)
       .json(validUser);
@@ -123,4 +124,15 @@ const signOut = async (req, res, next) => {
    
   };
 
-module.exports = { signup, signin, google_Auth , signOut };
+const logedUser = async (req,res , next)=>{
+  try {
+    const user = await User.findById(req.user._id)
+    res.status(200).json(user)
+  
+  } catch (error) {
+    next(error)
+  }
+  
+}
+
+module.exports = { signup, signin, google_Auth , signOut , logedUser };
