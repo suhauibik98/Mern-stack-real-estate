@@ -39,7 +39,7 @@ const Profile = () => {
 
   const [file, setFile] = useState(undefined);
 
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
   const [Popup, setPopup] = useState(false);
 

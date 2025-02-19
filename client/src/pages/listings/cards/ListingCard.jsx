@@ -21,7 +21,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 function ListingCard({ listing, isLoading }) {
   const { _id } = listing || {}; // Handle potential undefined `listing`
   const navigate = useNavigate();
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
   const location = useLocation();
   const handleToAddWishList = (e) => {
     e.stopPropagation();

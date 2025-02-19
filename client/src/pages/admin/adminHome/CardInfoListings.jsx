@@ -27,7 +27,7 @@ const CardInfoListings = ({ title }) => {
     page,
   });
 
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
   useEffect(() => {
     if (FetchListings?.listings?.length > 0) {

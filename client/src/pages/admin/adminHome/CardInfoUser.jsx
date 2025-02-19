@@ -19,7 +19,7 @@ const CardInfoUser = ({ title }) => {
   const { token } = useSelector((state) => state.user);
   const [page, setPage] = useState(1);
   const [info, setInfo] = useState([]);
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
   const { data: FetchUsers, isLoading } = useGetAllUserQuery(
     { token, page },
     // { refetchOnMountOrArgChange: true },

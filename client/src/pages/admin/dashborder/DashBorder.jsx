@@ -35,7 +35,7 @@ const DashBorder = () => {
   const { currentUser, token, loading, error } = useSelector(
     (state) => state.user
   );
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

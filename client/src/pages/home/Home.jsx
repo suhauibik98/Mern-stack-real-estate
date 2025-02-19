@@ -47,7 +47,7 @@ function Home() {
     phone: currentUser?.phone || "",
     message: "",
   });
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
   const [contactMessage] = useContactMessageMutation();
   const { data: getAll, isLoading, refetch } = useGetListingNotAuthQuery();

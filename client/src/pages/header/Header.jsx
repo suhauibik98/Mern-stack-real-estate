@@ -20,7 +20,7 @@ export const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
   useEffect(() => {
     const handleScroll = () => {

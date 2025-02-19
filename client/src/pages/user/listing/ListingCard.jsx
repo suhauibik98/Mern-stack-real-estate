@@ -22,7 +22,7 @@ function ListingCard({ listing, isLoading }) {
   
   const { _id } = listing || {}; // Handle potential undefined `listing`
   const Navigate = useNavigate();
-const baseUrl = "http://10.10.30.30:5000"
+const baseUrl = `${import.meta.env.VITE_BASEURL}`
   if (isLoading) {
     // Skeleton loader while data is being fetched
     return (

@@ -26,7 +26,7 @@ const UpdateListing = () => {
 
   const dispatch = useDispatch();
 
-  const baseUrl = "http://10.10.30.30:5000";
+  const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
   const prevData = location.state.listing;
 
