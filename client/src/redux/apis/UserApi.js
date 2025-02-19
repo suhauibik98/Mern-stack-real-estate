@@ -3,7 +3,7 @@ import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://10.10.30.30:5000/api/user",
+    baseUrl: `${import.meta.env.VITE_URL}/user`,
   }),
   endpoints: (builder) => ({
     updateUser: builder.mutation({

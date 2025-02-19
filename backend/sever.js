@@ -183,15 +183,16 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://10.10.30.30:5173",
+    origin: process.env.FR_URL,
     methods: ["GET", "POST"],
   },
 });
 
 // Middleware
+
 // app.use(morgan("dev"));
 app.use(cors({
-  origin: "http://10.10.30.30:5173",
+  origin: process.env.FR_URL,
   methods: ["GET", "POST", "PUT", "DELETE" , "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,

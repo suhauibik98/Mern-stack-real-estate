@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const listingApi = createApi({
   reducerPath: "listingApi", // Unique key for this API slice
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://10.10.30.30:5000/api/listing", // Base URL for the API
+    baseUrl: `${import.meta.env.VITE_URL}/listing`, // Base URL for the API
   }),
   tagTypes: ["Listing"], // Tags for caching and invalidation
   endpoints: (builder) => ({
