@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const ListingSchema = new mongoose.Schema(
   {
+    type: {
+      required: true,
+      type: String,
+    },
     name: {
       required: true,
       type: String,
@@ -18,41 +22,70 @@ const ListingSchema = new mongoose.Schema(
       required: true,
       type: Number,
     },
-    bathrooms: {
+    area: {
       required: true,
+      type: Number,
+    },
+    bathrooms: {
       type: Number,
     },
     bedrooms: {
-      required: true,
       type: Number,
     },
     furnished: {
-      required: true,
       type: Boolean,
+      default:false,
     },
     address: {
       required: true,
       type: String,
     },
-    type: {
+    city: {
       required: true,
       type: String,
     },
+
     parking: {
-      required: true,
       type: Boolean,
+      default:false,
     },
     offer: {
-      required: true,
       type: Boolean,
+      default:false,
     },
     imageUrls: {
       type: Array,
       required: true,
     },
+    estateType : {
+      required: true,
+      type: String,
+      enum: ['Lands', 'Residential' , "Commercial"]
+    },
+    estateSubType : {
+      required: true,
+      type: String,
+    },
+    alhood : {
+      // required: true,
+      type: String,
+    },
+    plateNum:{
+      // required: true,
+      type: Number,
+    },
+    latitude:{
+      type:Number,
+    },
+    longitude:{
+      // required: true,
+      type: Number,
+
+    },
+    
     userRef: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'users',
+      ref: "users",
       required: true,
     },
   },

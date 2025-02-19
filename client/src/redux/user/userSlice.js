@@ -4,6 +4,7 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
+  token: localStorage.getItem("token")? JSON.parse(localStorage.getItem("token")): null,
 };
 
 const userSlice = createSlice({
@@ -13,9 +14,10 @@ const userSlice = createSlice({
     signInStart: (state) => {
       state.loading = true;
     },
-    signInSuccess: (state, action) => {
+    signInSuccess: (state, action) => { 
       state.loading = false;
-      state.currentUser = action.payload;
+      state.currentUser = action.payload.currentUser;
+      state.token = action.payload.token;
       state.error = null;
     },
     signInFailure: (state, action) => {
@@ -25,10 +27,16 @@ const userSlice = createSlice({
     updateStart: (state) => {
       state.loading = true;
     },
-    updateSuccess: (state, action) => {
-      state.currentUser = action.payload;
+    updateSuccess: (state, action) => {     
+      state.currentUser = {...action.payload.data};
       state.loading = false;
       state.error = null;
+    },
+    updateAvatarSuccess:(state , action)=>{
+      state.currentUser = {...state.currentUser , avatar : action.payload.data }
+    },
+    deleteAvatarSuccess:(state )=>{
+      state.currentUser = {...state.currentUser , avatar : null }
     },
     updateFailure: (state, action) => {
       state.error = action.payload;
@@ -36,9 +44,11 @@ const userSlice = createSlice({
     },
     deleteUserStart: (state) => {
       state.loading = true;
+
     },
     deleteUserSuccess: (state) => {
       state.currentUser = null;
+      state.token = null;
       state.loading = false;
       state.error = null;
     },
@@ -52,7 +62,9 @@ const userSlice = createSlice({
     signOutSuccess: (state) => {
       state.currentUser = null;
       state.loading = false;
+      state.token = null
       state.error = null;
+      localStorage.removeItem("token");
     },
     signOutFailure: (state, action) => {
       state.error = action.payload;
@@ -74,5 +86,8 @@ export const {
   signOutStart,
   signOutSuccess,
   signOutFailure,
+  updateAvatarSuccess,
+  deleteAvatarSuccess
 } = userSlice.actions;
-export default userSlice.reducer;
+
+export { userSlice };

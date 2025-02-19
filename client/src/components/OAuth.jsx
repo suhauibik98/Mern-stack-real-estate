@@ -44,7 +44,7 @@ export const OAuth = () => {
     // </button>
     <button
   type="button"
-  className="flex items-center justify-center border border-gray-400 rounded-lg p-3 hover:bg-gray-100 transition duration-300"
+  className="flex w-full items-center justify-center border border-gray-400 rounded-lg p-3 hover:bg-gray-100 transition duration-300"
   onClick={handleOAuth}
 >
   <img 

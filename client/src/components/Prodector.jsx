@@ -1,17 +1,19 @@
-/* eslint-disable react/prop-types */
-import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import Spinner from "./Spinner";
 
+const Prodector = ({ children }) => {
+  const { token } = useSelector((state) => state.user);
+  
+  if (token) {
+    return children;
+  }
 
-const Prodector = ({children}) => {
-const {currentUser} = useSelector((state) => state.user)
-// console.log(currentUser);
+  return <Navigate to="/login" replace />;
+};
 
- 
-
-if(currentUser !== null) {
-    return children
-}
-  return <Navigate to="/login" replace /> 
-}
-export default Prodector
+Prodector.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+export default Prodector;

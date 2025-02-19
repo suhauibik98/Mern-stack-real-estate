@@ -1,23 +1,29 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import userReducer from "./user/userSlice";
-import ListingSlice from "./user/ListingSlice";
-import storage from "redux-persist/lib/storage";
-import { persistReducer, persistStore } from "redux-persist";
-
-const rootReducer = combineReducers({ user: userReducer , listing : ListingSlice });
-
-const persistConfig = {
-  key: "root",
-  storage,
-  version: 1,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = configureStore({
-  reducer:persistedReducer,
+import { configureStore } from "@reduxjs/toolkit";
+import { userSlice } from "./user/userSlice";
+import { ListingSlice } from "./user/ListingSlice";
+import { setupListeners } from "@reduxjs/toolkit/query/react";
+import { authApi } from "./apis/AuthApi";
+import { listingApi } from "./apis/ListingApi";
+import { userApi } from "./apis/UserApi";
+import { adminApi} from  "./apis/AdminApi";
+const store = configureStore({
+  reducer: {
+    user: userSlice.reducer,
+    listing: ListingSlice.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [listingApi.reducerPath] :listingApi.reducer,
+    [userApi.reducerPath] :userApi.reducer,
+    [adminApi.reducerPath] :adminApi.reducer,
+  },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+    getDefaultMiddleware()
+  .concat(authApi.middleware)
+  .concat(listingApi.middleware)
+  .concat(userApi.middleware)
+  .concat(adminApi.middleware),
+  devTools: true,
 });
 
-export const persistor = persistStore(store);
+setupListeners(store.dispatch);
+
+export { store };

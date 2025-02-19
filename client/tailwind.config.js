@@ -1,11 +1,61 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html","./src/**/*.{js,ts,jsx,tsx}",],
   theme: {
-    extend: {},
+    extend: {colors: {
+      primary: {
+        light: "var(--primary-light)",
+        "light-hover": "var(--primary-light-hover)",
+        "light-active": "var(--primary-light-active)",
+        normal: "var(--primary-normal)",
+        "normal-hover": "var(--primary-normal-hover)",
+        "normal-active": "var(--primary-normal-active)",
+        dark: "var(--primary-dark)",
+        "dark-hover": "var(--primary-dark-hover)",
+        "dark-active": "var(--primary-dark-active)",
+        darker: "var(--primary-darker)",
+      },
+      secondary: {
+        light: "var(--secondary-light)",
+        "light-hover": "var(--secondary-light-hover)",
+        "light-active": "var(--secondary-light-active)",
+        normal: "var(--secondary-normal)",
+        "normal-hover": "var(--secondary-normal-hover)",
+        "normal-active": "var(--secondary-normal-active)",
+        dark: "var(--secondary-dark)",
+        "dark-hover": "var(--secondary-dark-hover)",
+        "dark-active": "var(--secondary-dark-active)",
+        darker: "var(--secondary-darker)",
+      },
+      accent: {
+        light: "var(--accent-light)",
+        "light-hover": "var(--accent-light-hover)",
+        "light-active": "var(--accent-light-active)",
+        normal: "var(--accent-normal)",
+        "normal-hover": "var(--accent-normal-hover)",
+        "normal-active": "var(--accent-normal-active)",
+        dark: "var(--accent-dark)",
+        "dark-hover": "var(--accent-dark-hover)",
+        "dark-active": "var(--accent-dark-active)",
+        darker: "var(--accent-darker)",
+      },
+      "primary-text": {
+        light: "var(--primary-text-light)",
+        "light-hover": "var(--primary-text-light-hover)",
+        "light-active": "var(--primary-text-light-active)",
+        normal: "var(--primary-text-normal)",
+        "normal-hover": "var(--primary-text-normal-hover)",
+        "normal-active": "var(--primary-text-normal-active)",
+        dark: "var(--primary-text-dark)",
+        "dark-hover": "var(--primary-text-dark-hover)",
+        "dark-active": "var(--primary-text-dark-active)",
+        darker: "var(--primary-text-darker)",
+      },
+    },
+    fontFamily: {
+      cairo: ['Cairo'],
+    },},
   },
-  plugins: [],
+  plugins: [
+  ],
 }
