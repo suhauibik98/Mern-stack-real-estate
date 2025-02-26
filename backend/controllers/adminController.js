@@ -87,7 +87,7 @@ const getAllListingsCount = async (req, res) => {
 // POST /users
 // Create a new user
 
-const createUser = async (req, res) => {
+const createUser = async (req, res , next) => {
   const { username, email, password, phone } = req.body;
   try {
     const SchemaUser = Joi.object({
@@ -134,6 +134,10 @@ const createUser = async (req, res) => {
         details: error.details[0].message,
       });
     }
+     
+    const Deplcait = await User.findOne({$or:[{email},{username},{phone}]}).select("-password")
+    
+    if(Deplcait) return next(errorHandler(`The email or username or phone is already taken`, 400)) 
 
     const newUser = new User({ username, email, password, phone });
     const savedUser = await newUser.save();
@@ -328,7 +332,7 @@ const deleteUserAndHisListingsByAdmin = async (req, res, next) => {
 
     // Delete the user & trigger schema pre-hooks
 
-    // await user.deleteOne();
+    await user.deleteOne();
 
     res
       .status(200)

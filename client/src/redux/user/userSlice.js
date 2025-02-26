@@ -14,11 +14,14 @@ const userSlice = createSlice({
     signInStart: (state) => {
       state.loading = true;
     },
-    signInSuccess: (state, action) => { 
+    signInSuccess: (state, action) => {       
       state.loading = false;
       state.currentUser = action.payload.currentUser;
       state.token = action.payload.token;
       state.error = null;
+      if(action.payload.token){
+        localStorage.setItem("token", JSON.stringify(action.payload.token));
+      }
     },
     signInFailure: (state, action) => {
       state.loading = false;
@@ -36,7 +39,7 @@ const userSlice = createSlice({
       state.currentUser = {...state.currentUser , avatar : action.payload.data }
     },
     deleteAvatarSuccess:(state )=>{
-      state.currentUser = {...state.currentUser , avatar : null }
+      state.currentUser = {...state.currentUser , avatar : "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png" }
     },
     updateFailure: (state, action) => {
       state.error = action.payload;

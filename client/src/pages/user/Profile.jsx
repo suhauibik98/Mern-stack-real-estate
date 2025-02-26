@@ -44,6 +44,8 @@ function Profile() {
 
   const [Popup, setPopup] = useState(false);
 
+  const [Error, setError] = useState("");
+
   const [formData, setformData] = useState({});
 
   const dispatch = useDispatch();
@@ -76,8 +78,10 @@ function Profile() {
         file: newUploadAvatar,
       }).unwrap();
       dispatch(updateAvatarSuccess({ data: data?.publicUrl }));
+      setError("")
     } catch (error) {
       console.log(error);
+      setError(error?.data ? error?.data?.message : "Something went wrong!")
     }
   };
 
@@ -95,7 +99,7 @@ function Profile() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();    
+    e.preventDefault();
     try {
       dispatch(updateStart());
       const data = await updateUser({
@@ -199,267 +203,267 @@ function Profile() {
   if (isLoading) return <Spinner />;
   return (
     <>
-  <Box
-    display="flex"
-    flexWrap="wrap"
-    justifyContent="center"
-    alignItems="flex-start"
-    gap={0}
-    padding={0}
-    marginTop={15}
-    width="100%"
-  >
-    {/* Left Panel */}
-    <motion.div
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full sm:w-full md:w-1/4 "
-    >
-      <Box display="flex" flexDirection="column" alignItems="center" p={3}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          gap={3}
-          p={3}
-          boxShadow={3}
-          width="100%"
-          borderRadius={2}
-          bgcolor="white"
-        >
-          <Typography variant="h6" textAlign="center">
-            Quick Actions
-          </Typography>
-          <hr className="w-full" />
-          <Button
-            onClick={() => nav("/create-listing")}
-            variant="contained"
-            color="success"
-            className="flex w-full gap-3"
-          >
-            <AddCircleSharpIcon />
-            Create Listing
-          </Button>
-
-          <Button
-            onClick={() => nav("/user-listing")}
-            variant="contained"
-            color="success"
-            className="flex w-full gap-3"
-          >
-            <DashboardSharpIcon />
-            My Listings
-          </Button>
-        </Box>
-      </Box>
-    </motion.div>
-
-    {/* Center Panel */}
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap={4}
-      p={3}
-      flexGrow={1}
-      className="w-full md:w-2/4"
-    >
-      {/* Photo Section */}
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-[1000px]"
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="center"
+        alignItems="flex-start"
+        gap={0}
+        padding={0}
+        marginTop={15}
+        width="100%"
       >
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          gap={2}
-          p={3}
-          borderRadius={2}
-          boxShadow={3}
-          bgcolor="white"
+        {/* Left Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full sm:w-full md:w-1/4 "
         >
-          <Typography variant="h6">Photo</Typography>
-          <hr />
-
-          <section className="flex flex-wrap items-center justify-between gap-4 py-4">
-            <input
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-              ref={fileRef}
-              hidden
-              readOnly
-              accept="image/*"
-            />
-            <Avatar
-              src={
-                currentUser?.avatar
-                  ? baseUrl + currentUser?.avatar
-                  : "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png"
-              }
-              alt="Avatar"
-              sx={{ width: 100, height: 100, cursor: "pointer" }}
-              onClick={() => fileRef.current.click()}
-            />
-            <div className="flex flex-col gap-1">
-              <Typography>Choose an image from your computer</Typography>
-              <Typography className="opacity-50">
-                Maximum size 100x100 px
+          <Box display="flex" flexDirection="column" alignItems="center" p={3}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              gap={3}
+              p={3}
+              boxShadow={3}
+              width="100%"
+              borderRadius={2}
+              bgcolor="white"
+            >
+              <Typography variant="h6" textAlign="center">
+                Quick Actions
               </Typography>
-              <div className="my-2 flex flex-wrap gap-2">
-                <LoadingButton
-                  loading={isLoadinguploadUserAvatar}
-                  loadingPosition="start"
-                  startIcon={<CloudUploadIcon />}
-                  variant={`${hideDelete ? "contained" : "outlined"}`}
-                  onClick={() => fileRef.current.click()}
-                >
-                  Upload
-                </LoadingButton>
-                <LoadingButton
-                  variant="contained"
-                  loading={isloadingdeleteUserAvatar}
-                  loadingPosition="start"
-                  startIcon={<DeleteForeverIcon />}
-                  color="error"
-                  onClick={handleDeleteAvatar}
-                  disabled={hideDelete}
-                >
-                  Delete
-                </LoadingButton>
-              </div>
-              {isSuccessuploadUserAvatar && (
-                <PopUpMessages message="Avatar upload successful" code={200} />
-              )}
-              {isSuccess && (
-                <PopUpMessages message="User updated successfully" code={200} />
-              )}
-            </div>
-          </section>
-        </Box>
-      </motion.div>
+              <hr className="w-full" />
+              <Button
+                onClick={() => nav("/create-listing")}
+                variant="contained"
+                color="success"
+                className="flex w-full gap-3"
+              >
+                <AddCircleSharpIcon />
+                Create Listing
+              </Button>
 
-      {/* Information Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-[1000px]"
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          gap={2}
-          p={3}
-          borderRadius={2}
-          boxShadow={3}
-          bgcolor="white"
-        >
-          <Typography variant="h6">Information</Typography>
-          <hr />
-          <section>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                className="border p-3 rounded-lg"
-                onChange={handleChange}
-                defaultValue={currentUser?.username}
-              />
-                {/* <label htmlFor="email">Email :</label> */}
-              <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                className="border p-3 rounded-lg"
-                onChange={handleChange}
-                defaultValue={currentUser?.email}
-              />
-              {/* <label htmlFor="phone">Mobile number :</label> */}
-              <input
-                type="phone"
-                id="phone"
-                placeholder="Phone..."
-                className="border p-3 rounded-lg"
-                onChange={handleChange}
-                defaultValue={currentUser?.phone}
-              />
-              {renderPasswordFields()}
-              <div className="flex justify-end">
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  loading={loading || updateIsLoading}
-                  loadingPosition="start"
-                  disabled={!isFillForm}
-                  startIcon={<DownloadSharpIcon />}
-                  // className="w-1/4"
-                  sx={{fontSize:{xs:"0.6rem" ,md:"1rem" ,lg:"1rem"} , width:{xs:"1/2" , md:"1/4" , lg:"1/6"}}}
-                >
-                  Update User
-                </LoadingButton>
-              </div>
-            </form>
-          </section>
-        </Box>
-      </motion.div>
-    </Box>
+              <Button
+                onClick={() => nav("/user-listing")}
+                variant="contained"
+                color="success"
+                className="flex w-full gap-3"
+              >
+                <DashboardSharpIcon />
+                My Listings
+              </Button>
+            </Box>
+          </Box>
+        </motion.div>
 
-    {/* Right Panel */}
-    <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full sm:w-full md:w-1/4 "
-    >
-      <Box display="flex" flexDirection="column" alignItems="center" p={3}>
+        {/* Center Panel */}
         <Box
           display="flex"
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          gap={2}
+          gap={4}
           p={3}
-          borderRadius={2}
-          boxShadow={3}
-          bgcolor="white"
-          width="100%"
+          flexGrow={1}
+          className="w-full md:w-2/4"
         >
-          <Typography variant="h6" textAlign="center">
-            Account Management
-          </Typography>
-          <hr className="w-full" />
-          <Button
-            variant="contained"
-            color="error"
-            className="flex w-full gap-3"
-            onClick={handleSignOut}
+          {/* Photo Section */}
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full max-w-[1000px]"
           >
-            <ExitToAppSharpIcon /> Sign Out
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            className="flex w-full gap-3"
-            onClick={setToValueDeleted}
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              gap={2}
+              p={3}
+              borderRadius={2}
+              boxShadow={3}
+              bgcolor="white"
+            >
+              <Typography variant="h6">Photo</Typography>
+              <hr />
+
+              <section className="flex flex-wrap items-center justify-between gap-4 py-4">
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  ref={fileRef}
+                  hidden
+                  readOnly
+                  accept="image/*"
+                />
+                <Avatar
+                  src={
+                    currentUser?.avatar.startsWith("/uploads") ? `${baseUrl}${currentUser?.avatar}` : currentUser?.avatar
+
+                  }
+                  // alt="Avatar"
+                  sx={{ width: 100, height: 100, cursor: "pointer" }}
+                  onClick={() => fileRef.current.click()}
+                />
+                <div className="flex flex-col gap-1">
+                  <Typography>Choose an image from your computer</Typography>
+                  <Typography className="opacity-50">
+                    Maximum size 100x100 px
+                  </Typography>
+                  <div className="my-2 flex flex-wrap gap-2">
+                    <LoadingButton
+                      loading={isLoadinguploadUserAvatar}
+                      loadingPosition="start"
+                      startIcon={<CloudUploadIcon />}
+                      variant={`${hideDelete ? "contained" : "outlined"}`}
+                      onClick={() => fileRef.current.click()}
+                    >
+                      Upload
+                    </LoadingButton>
+                    <LoadingButton
+                      variant="contained"
+                      loading={isloadingdeleteUserAvatar}
+                      loadingPosition="start"
+                      startIcon={<DeleteForeverIcon />}
+                      color="error"
+                      onClick={handleDeleteAvatar}
+                      disabled={hideDelete}
+                    >
+                      Delete
+                    </LoadingButton>
+                  </div>
+                  {isSuccessuploadUserAvatar && (
+                    <PopUpMessages message="Avatar upload successful" code={200} />
+                  )}
+                  {isSuccess && (
+                    <PopUpMessages message="User updated successfully" code={200} />
+                  )}
+                </div>
+              </section>
+               <div className="text-red-500">{Error}</div>
+            </Box>
+          </motion.div>
+
+          {/* Information Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full max-w-[1000px]"
           >
-            <PersonRemoveSharpIcon /> Delete Account
-          </Button>
-          <DeleteUser open={Popup} setOpen={callBackFun}></DeleteUser>
-          <p className="text-red-700 mt-4">{error ? error : ""}</p>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              gap={2}
+              p={3}
+              borderRadius={2}
+              boxShadow={3}
+              bgcolor="white"
+            >
+              <Typography variant="h6">Information</Typography>
+              <hr />
+              <section>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <input
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    className="border p-3 rounded-lg"
+                    onChange={handleChange}
+                    defaultValue={currentUser?.username}
+                  />
+                  {/* <label htmlFor="email">Email :</label> */}
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    className="border p-3 rounded-lg"
+                    onChange={handleChange}
+                    defaultValue={currentUser?.email}
+                  />
+                  {/* <label htmlFor="phone">Mobile number :</label> */}
+                  <input
+                    type="phone"
+                    id="phone"
+                    placeholder="Phone..."
+                    className="border p-3 rounded-lg"
+                    onChange={handleChange}
+                    defaultValue={currentUser?.phone}
+                  />
+                  {renderPasswordFields()}
+                  <div className="flex justify-end">
+                    <LoadingButton
+                      type="submit"
+                      variant="contained"
+                      loading={loading || updateIsLoading}
+                      loadingPosition="start"
+                      disabled={!isFillForm}
+                      startIcon={<DownloadSharpIcon />}
+                      // className="w-1/4"
+                      sx={{ fontSize: { xs: "0.6rem", md: "1rem", lg: "1rem" }, width: { xs: "1/2", md: "1/4", lg: "1/6" } }}
+                    >
+                      Update User
+                    </LoadingButton>
+                  </div>
+                </form>
+              </section>
+            </Box>
+          </motion.div>
         </Box>
+
+        {/* Right Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full sm:w-full md:w-1/4 "
+        >
+          <Box display="flex" flexDirection="column" alignItems="center" p={3}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              gap={2}
+              p={3}
+              borderRadius={2}
+              boxShadow={3}
+              bgcolor="white"
+              width="100%"
+            >
+              <Typography variant="h6" textAlign="center">
+                Account Management
+              </Typography>
+              <hr className="w-full" />
+              <Button
+                variant="contained"
+                color="error"
+                className="flex w-full gap-3"
+                onClick={handleSignOut}
+              >
+                <ExitToAppSharpIcon /> Sign Out
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                className="flex w-full gap-3"
+                onClick={setToValueDeleted}
+              >
+                <PersonRemoveSharpIcon /> Delete Account
+              </Button>
+              <DeleteUser open={Popup} setOpen={callBackFun}></DeleteUser>
+              <p className="text-red-700 mt-4">{error ? error : ""}</p>
+            </Box>
+          </Box>
+        </motion.div>
       </Box>
-    </motion.div>
-  </Box>
-  {Popup && <DeleteUser />}
-</>
+      {Popup && <DeleteUser />}
+    </>
 
   );
 }

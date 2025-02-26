@@ -20,11 +20,12 @@ const CardInfoUser = ({ title }) => {
   const [page, setPage] = useState(1);
   const [info, setInfo] = useState([]);
   const baseUrl = `${import.meta.env.VITE_BASEURL}`;
+  
+  // Correcting the API query hook usage:
+  
   const { data: FetchUsers, isLoading } = useGetAllUserQuery(
-    { token, page },
-    // { refetchOnMountOrArgChange: true },
-    { keepPreviousData: true },
-    {skip: !token}
+    { token, page }, 
+    { keepPreviousData: true, skip: !token } 
   );
 
   const UserRef = useRef();
@@ -45,6 +46,7 @@ const CardInfoUser = ({ title }) => {
       setPage((prevPage) => prevPage + 1);
     }
   };
+
   return (
     <Card
       sx={{
@@ -70,7 +72,6 @@ const CardInfoUser = ({ title }) => {
         }}
       >
         {title}
-
         <span className="text-[0.8rem]">({FetchUsers?.Total_users})</span>
       </Box>
       <Divider />
@@ -82,19 +83,16 @@ const CardInfoUser = ({ title }) => {
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {info.length > 0 ? (
             info.map((item, index) => (
-              <>
-                <ListItem key={index}>
+              <React.Fragment key={index}>
+                <ListItem>
                   <ListItemAvatar>
                     <Avatar src={`${baseUrl}${item?.avatar || ""}`}>
-                      {item?.avatar ? null : <ImageIcon />}
+                      {item?.avatar ? null : <Avatar />}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={item?.username || "Unknown User"}
-                    secondary={
-                      new Date(item?.createdAt).toLocaleString() ||
-                      "Unknown Date"
-                    }
+                    secondary={new Date(item?.createdAt).toLocaleString() || "Unknown Date"}
                   />
                   <span
                     className={`border ${
@@ -107,7 +105,7 @@ const CardInfoUser = ({ title }) => {
                   </span>
                 </ListItem>
                 <Divider />
-              </>
+              </React.Fragment>
             ))
           ) : (
             <Typography variant="body2" color="textSecondary">

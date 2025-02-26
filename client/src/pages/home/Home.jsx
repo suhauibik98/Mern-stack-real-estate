@@ -110,7 +110,7 @@ try {
       ))}
     </Grid2>
   );
-
+ 
   return (
     <Box className="w-full">
       {/* Hero Section with Overlay and Fade Transition */}
@@ -371,7 +371,7 @@ try {
             <Button
               variant="outlined"
               color="success"
-              onClick={() => nav("/listings-list")}
+              onClick={() => token ? nav("/listings-list"): nav("/sign-in")}
             >
               Show More
               <FaArrowRight className="ml-3" />

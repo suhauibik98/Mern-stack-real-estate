@@ -7,7 +7,7 @@ export const authApi = createApi({
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: ( credentials) => {
+      query: (credentials) => {
         return {
           url: "/signin",
           method: "POST",
@@ -16,7 +16,7 @@ export const authApi = createApi({
       },
     }),
     signup: builder.mutation({
-      query: ( formData) => {
+      query: (formData) => {
         return {
           url: "/signup",
           method: "POST",
@@ -24,29 +24,45 @@ export const authApi = createApi({
         };
       },
     }),
-    logedUser: builder.mutation({
-      query: ({token}) => {
+
+    googleAuth: builder.mutation({
+      query: (formData) => {
         return {
-          url: "/logedUser",
-          headers: { Authorization: `Bearer ${token}` },
-          method: "GET",       
+          url: "/google",
+          method: "POST",
+          body: formData,
         };
       },
     }),
-    
-    logOutUser:builder.mutation({
-      query: ({token}) => {
+
+    logedUser: builder.mutation({
+      query: ({ token }) => {
+        return {
+          url: "/logedUser",
+          headers: { Authorization: `Bearer ${token}` },
+          method: "GET",
+        };
+      },
+    }),
+
+    logOutUser: builder.mutation({
+      query: ({ token }) => {
         return {
           url: "/signout",
           headers: { Authorization: `Bearer ${token}` },
           method: "POST",
-
-        }
-      }
-    })
+        };
+      },
+    }),
   }),
 });
 
-export const {useLoginMutation  , useLogedUserMutation ,useLogOutUserMutation , useSignupMutation} = authApi
+export const {
+  useLoginMutation,
+  useLogedUserMutation,
+  useLogOutUserMutation,
+  useSignupMutation,
+  useGoogleAuthMutation,
+} = authApi;
 
 // export {authApi , useLoginMutation , useLogedUserMutation , useLogOutUserMutation}

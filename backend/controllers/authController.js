@@ -82,20 +82,20 @@ const signin = async (req, res, next) => {
   }
 };
 
-const google_Auth = async (req, res, next) => {
-  const { email, name, photo } = req.body;
+const googleAuth = async (req, res, next) => {
+  const { email, name, photo  , phone} = req.body;
   try {
     const find_user = await User.findOne({ email });
     if (find_user) {
-      const token = jwt.sign({ id: find_user._id }, process.env.JWT_SECRET);
-      const { password: pass, ...rest } = find_user._doc;
+      const token = jwt.sign({ id: find_user._id }, process.env.JWT_SECRET , {expiresIn: process.env.JWT_EXPIRE,});
+      const { password: pass, ...user } = find_user._doc;
 
       // res
       //   .cookie("access_token", token, { httpOnly: true })
       //   .status(200)
-      //   .json(rest);
+      //   .json(user);
 
-      res.status(200).json({ token, rest });
+      res.status(200).json({ token, user });
     } else {
       const genaretedPassword =
         Math.random().toString(36).split(-8) +
@@ -106,19 +106,21 @@ const google_Auth = async (req, res, next) => {
         password: genaretedPassword,
         email: email,
         avatar: photo,
+        phone: phone
       });
 
       newUser.isGoogle = true;
 
-      await newUser.save();
 
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
-      const { password: pass, ...rest } = newUser._doc;
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET , {expiresIn: process.env.JWT_EXPIRE,});
+      const { password: pass, ...user } = newUser._doc;
       // res
       //   .cookie("access_token", token, { httpOnly: true })
       //   .status(200)
-      //   .json(rest);
-      res.status(200).json({ token, rest });
+      //   .json(user);
+      await newUser.save();
+
+      res.status(200).json({ token, user });
     }
   } catch (error) {
     next(error);
@@ -146,4 +148,4 @@ const logedUser = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, signin, google_Auth, signOut, logedUser };
+module.exports = { signup, signin, googleAuth, signOut, logedUser };

@@ -204,11 +204,10 @@ export const Header = () => {
                   <IconButton component={Link} to="/profile">
                     <Avatar
                       src={
-                        currentUser?.avatar
-                          ? `${baseUrl}${currentUser.avatar}`
-                          : "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png"
+                        currentUser?.avatar.startsWith("/uploads")  ? `${baseUrl}${currentUser?.avatar}`
+                          : currentUser?.avatar
                       }
-                      alt="profile"
+                      // alt="Avatar"
                     />
                   </IconButton>
                   {/* <Typography sx={{color: isActive("/listings")

@@ -70,15 +70,6 @@ const DashBorder = () => {
     { label: "Card Update", icon: <Edit />, path: "/admin/card-update" },
   ];
 
-function ali() {
-var a = 2 ;
-var b  = function(){
-  console.log(a * 2);
-}  
-return b
-}
-
-console.log(ali()());
 
 
   useEffect(() => {
@@ -296,7 +287,7 @@ console.log(ali()());
         } transition-all duration-300`}
       >
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold bg-gray-200 w-full p-2 mx-1 rounded-xl text-gray-700 uppercase">
+          <h1 className="text-xl font-bold bg-gray-200 w-full p-2 mx-1 rounded-xl text-gray-700 uppercase">
             {ItemNav.label}
           </h1>
           <button
@@ -332,14 +323,14 @@ console.log(ali()());
               </AdminProdector>
             }
           />
-          <Route
+          {/* <Route
             path="/single-user/:id"
             element={
               <AdminProdector>
                 <SingleUser />
               </AdminProdector>
             }
-          />
+          /> */}
           <Route path="*" element={<HomeAdmin />} />
         </Routes>
       </motion.div>

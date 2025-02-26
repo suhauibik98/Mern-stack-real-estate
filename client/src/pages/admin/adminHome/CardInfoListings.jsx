@@ -91,7 +91,7 @@ const CardInfoListings = ({ title }) => {
                 <ListItem>
                   <ListItemAvatar>
                     <Avatar src={`${baseUrl}${item?.imageUrls[0] || ""}`}>
-                      {item?.imageUrls[0] ? null : <ImageIcon />}
+                      {item?.imageUrls[0] ? null : <Avatar/>}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText

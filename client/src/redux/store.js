@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userSlice } from "./user/userSlice";
+import { allUsersSlice } from "./user/allUsersSlice";
 import { ListingSlice } from "./user/ListingSlice";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { authApi } from "./apis/AuthApi";
@@ -10,6 +11,7 @@ const store = configureStore({
   reducer: {
     user: userSlice.reducer,
     listing: ListingSlice.reducer,
+    allUsers: allUsersSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [listingApi.reducerPath] :listingApi.reducer,
     [userApi.reducerPath] :userApi.reducer,

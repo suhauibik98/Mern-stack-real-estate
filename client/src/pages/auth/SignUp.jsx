@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { OAuth } from "../../components/OAuth";
@@ -18,7 +18,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await signup(formData);
+      const response = await signup(formData).unwrap();
       if (response?.error) {
         setError(response?.error?.data?.message);
         return;
@@ -29,6 +29,10 @@ function SignUp() {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   if (isLoading) return <Spinner />;
 
   return (

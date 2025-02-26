@@ -91,7 +91,15 @@ export const adminApi = createApi({
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
         }),
-    })
+    }),
+    createUser: builder.mutation({
+      query: ({ token, formData }) => ({
+        url: `/createUser`,
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body:formData
+      }),
+    }),
   }),
 });
 export const {
@@ -106,5 +114,6 @@ export const {
   useGetAllListingsCountQuery,
   useGetAllListingsForAdminQuery,
   useDeleteUserAndHisListingsByAdminMutation,
-  useGetMessegesFromDBQuery
+  useGetMessegesFromDBQuery,
+  useCreateUserMutation,
 } = adminApi;

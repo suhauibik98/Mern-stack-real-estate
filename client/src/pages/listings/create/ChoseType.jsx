@@ -80,7 +80,8 @@ const ChoseType = () => {
               className="w-full h-full object-cover transition-all duration-300 hover:brightness-75"
               alt="Sale"
               data-name="sale"
-            />
+              loading="lazy"
+              />
             <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white text-xl font-bold px-4 py-2 rounded">
               Sale - بيع
             </div>
@@ -92,12 +93,13 @@ const ChoseType = () => {
             // whileHover={{ scale: 1.05 }}
             // whileTap={{ scale: 0.95 }}
             className="relative w-full h-[300px] md:h-[400px] flex justify-center items-center overflow-hidden rounded-lg shadow-lg"
-          >
+            >
             <img
               src={rent}
               className="w-full h-full object-cover transition-all duration-300 hover:brightness-75"
               alt="Rent"
               data-name="rent"
+              loading="lazy"
             />
             <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white text-xl font-bold px-4 py-2 rounded">
               Rent - أيجار

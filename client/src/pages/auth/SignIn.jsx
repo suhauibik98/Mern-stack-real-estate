@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -33,7 +33,7 @@ function SignIn() {
       const res = await login(formData).unwrap();
       
       dispatch(signInSuccess({ token: res.token, currentUser: res.user }));
-      localStorage.setItem("token", JSON.stringify(res.token));
+      // localStorage.setItem("token", JSON.stringify(res.token));
       nav("/");
     } catch (error) {
       console.log(error);
@@ -41,6 +41,9 @@ function SignIn() {
       setPopupMessage({ message: error.data?.message || "Login failed", code: error.status });
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // if (isLoading) return <Spinner />;
 
